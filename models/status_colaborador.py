@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, create_engine
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from database.session_db import Base
 
 
 class StatusColaborador(Base):
-    __tablename__="status_colaborador"
+    __tablename__ = "status_colaborador"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(255), nullable=False)

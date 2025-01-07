@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, create_engine
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from database.session_db import Base
 
 
 class Colaborador(Base):
-    __tablename__="colaborador"
+    __tablename__ = "colaborador"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(255), nullable=False)

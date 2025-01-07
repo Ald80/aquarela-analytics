@@ -1,20 +1,12 @@
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from models.colaborador import Colaborador as ColaboradorModel
-from models.status_colaborador import StatusColaborador as StatusColaboradorModel
-from models.cargo import Cargo as CargoModel
-from models.status_colaborador import StatusColaborador as StatusColaboradorModel
-from models.lider import Lider as LiderModel
-from schemas.colaborador import ColaboradorCreate, ColaboradorUpdate, ColaboradorAlterPassword, ColaboradorPromotion
-from passlib.context import CryptContext
+from schemas.colaborador import ColaboradorCreate
 from sqlalchemy.exc import IntegrityError
-from exceptions.customized_exceptions import ServerError, NotFoundError, ConflictError
-from enum import Enum
-pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
+from database.utils import get_password_hashed
+
 
 def insert_colaborador(colaborador_create: ColaboradorCreate, db: Session):
-    hashed_password = pwd_context.hash(colaborador_create.senha)
-    colaborador_create.senha = hashed_password
-    print(colaborador_create.model_dump())
+    colaborador_create.senha = get_password_hashed(colaborador_create.senha)
     new_colaborador = ColaboradorModel(**colaborador_create.model_dump())
     try:
         db.add(new_colaborador)
@@ -24,7 +16,5 @@ def insert_colaborador(colaborador_create: ColaboradorCreate, db: Session):
         db.rollback()
         raise e
     except Exception as e:
-        db.rollback()
         raise e
     return new_colaborador
-
